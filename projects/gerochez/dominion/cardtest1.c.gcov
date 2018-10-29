@@ -1,0 +1,130 @@
+        -:    0:Source:cardtest1.c
+        -:    0:Graph:cardtest1.gcno
+        -:    0:Data:cardtest1.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:/*
+        -:    2: * TEST FOR SMITHY CARD
+        -:    3:*/
+        -:    4:
+        -:    5:/*
+        -:    6: * Include the following in your makefile:
+        -:    7: *
+        -:    8: * cardtest1: cardtest1.c dominion.o rngs.o
+        -:    9: * 	gcc -o cardtest1 -g cardtest1.c dominion.o rngs.o $(CFLAGS)
+        -:   10: *
+        -:   11:*/
+        -:   12:
+        -:   13:#include "dominion.h"
+        -:   14:#include "dominion_helpers.h"
+        -:   15:#include <string.h>
+        -:   16:#include <stdio.h>
+        -:   17:#include <assert.h>
+        -:   18:#include <stdlib.h>
+        -:   19:#include "rngs.h"
+        -:   20:
+        -:   21:#define TESTCARD "smithy"
+        -:   22:
+function main called 1 returned 100% blocks executed 69%
+        1:   23:int main()
+        -:   24:{
+        1:   25:	int newCards = 0;
+        1:   26:	int discarded = 1;
+        1:   27:	int extraCoins = 0;
+        1:   28:	int shuffledCards = 0;
+        -:   29:
+        -:   30:	int i, j, m;
+        1:   31:	int handpos = 0, choice1 = 0, choice2 = 0, choice3 = 0, bonus = 0;
+        1:   32:	int seed = 1000;
+        1:   33:	int numPlayers = 2;
+        1:   34:	int thisPlayer = 0;
+        -:   35:	struct gameState G, GT;
+        1:   36:	int k[10] = {adventurer, village, steward, smithy, embargo,
+        -:   37:		     gardens, council_room, great_hall, minion, outpost};
+        -:   38:	
+        -:   39:
+        -:   40:	//initlialize game state
+        1:   41:	initializeGame(numPlayers, k, seed, &G);
+call    0 returned 100%
+        -:   42:
+        1:   43:	printf("**** TESTING CARD: %s ****\n", TESTCARD);
+call    0 returned 100%
+        -:   44:
+        -:   45:	//Begin Testing
+        1:   46:	memcpy(&GT, &G, sizeof(struct gameState));
+        -:   47:
+        -:   48:	//call card effect 
+        1:   49:	cardEffect(smithy, choice1, choice2, choice3, &GT, handpos, &bonus);
+call    0 returned 100%
+        -:   50:
+        -:   51:	//Simulate smithy effect
+        1:   52:	newCards = 3;
+        -:   53:
+        -:   54:	//Print messages comparing G and GT
+        1:   55:	printf("Hand Count = %d, expected %d\n", GT.handCount[thisPlayer], G.handCount[thisPlayer] + newCards - discarded);
+call    0 returned 100%
+        1:   56:	assert(GT.handCount[thisPlayer] == G.handCount[thisPlayer] + newCards - discarded);
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+call    2 never executed
+        1:   57:	printf("Deck Count = %d, expected %d\n", GT.deckCount[thisPlayer], G.deckCount[thisPlayer] - newCards + shuffledCards);
+call    0 returned 100%
+        1:   58:	assert(GT.deckCount[thisPlayer] == G.deckCount[thisPlayer] - newCards + shuffledCards);
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+call    2 never executed
+        1:   59:	printf("Coins = %d, expected %d\n", GT.coins, G.coins + extraCoins);
+call    0 returned 100%
+        1:   60:	assert(GT.coins == G.coins + extraCoins);
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+call    2 never executed
+        1:   61:	printf("Checking Victory card piles...\n");
+call    0 returned 100%
+        1:   62:	assert(GT.supplyCount[estate] == G.supplyCount[estate]);
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+call    2 never executed
+        1:   63:	assert(GT.supplyCount[duchy] == G.supplyCount[duchy]);
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+call    2 never executed
+        1:   64:	assert(GT.supplyCount[province] == G.supplyCount[province]);
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+call    2 never executed
+        1:   65:	printf("Checking Kingdom card piles...\n");
+call    0 returned 100%
+       11:   66:	for (i = 0; i < 10; i++)
+branch  0 taken 91%
+branch  1 taken 9% (fallthrough)
+        -:   67:	{
+       10:   68:		assert(G.supplyCount[k[i]] == GT.supplyCount[k[i]]);
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+call    2 never executed
+        -:   69:	}
+        1:   70:	printf("Checking Hand, Deck, Discard, Coins of other player...\n");
+call    0 returned 100%
+        1:   71:	assert(GT.handCount[1] == G.handCount[1]);
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+call    2 never executed
+        1:   72:	assert(GT.discardCount[1] == G.discardCount[1]);
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+call    2 never executed
+        1:   73:	assert(GT.deckCount[1] == G.deckCount[1]);
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+call    2 never executed
+        1:   74:	assert(GT.coins == G.coins);
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+call    2 never executed
+        -:   75:
+        1:   76:	printf("ALL TESTS PASSED\n");
+call    0 returned 100%
+        -:   77:
+        -:   78:
+        1:   79:}

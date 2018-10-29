@@ -706,7 +706,7 @@ void smithyEffect(int card, int choice1, int choice2, int choice3, struct gameSt
   }
 
   //+3 Cards
-      for (i = 1; i < 3; i++)
+      for (i = 0; i < 3; i++)
 	{
 	  drawCard(currentPlayer, state);
 	}
@@ -810,7 +810,7 @@ void embargoEffect(int card, int choice1, int choice2, int choice3, struct gameS
   }
 
 //+2 Coins
-      state->coins = state->coins + 1;
+      state->coins = state->coins + 2;
 			
       //see if selected pile is in play
       if ( state->supplyCount[choice1] == -1 )

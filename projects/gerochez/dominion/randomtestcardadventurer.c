@@ -20,6 +20,10 @@ int main()
 	int discarded = 1;
 	int shuffledCards = 0;
 	int extraCoins = 0;
+	int drawnTreasure = 0;
+	int cardDrawn;
+	int temphand[MAX_HAND];
+	int z = 0;
 	
 	int i, j, n, r;
 	int seed = 1000;
@@ -61,17 +65,41 @@ int main()
 		memcpy(&GT, &G, sizeof(struct gameState));
 
 		//call smithy with GT
-		r = cardEffect(smithy, choice1, choice2, choice3, &GT, handpos, &bonus);
+		r = cardEffect(adventurer, choice1, choice2, choice3, &GT, handpos, &bonus);
 
-		newCards = 3;
+		//simulate adventurer effect
+		while(drawnTreasure < 2)
+		{
+			if (G.deckCount[thisPlayer] <1)
+			{
+				shuffle(thisPlayer, &G);
+			}
+			drawCard(thisPlayer, &G); //newCards++;
+			cardDrawn = G.hand[thisPlayer][G.handCount[thisPlayer]-1];
+			if (cardDrawn == copper || cardDrawn == silver || cardDrawn == gold)
+				drawnTreasure++;
+			else
+			{
+				temphand[z]=cardDrawn;
+				G.handCount[thisPlayer]--; 
+				z++;
+			}
+		}
+		
+      		while(z-1>=0)
+	  	{
+			G.discard[thisPlayer][G.discardCount[thisPlayer]++]=temphand[z-1]; 
+			z=z-1;
+      		}
+			
 
 		//printf("Testing Player: %d\n", thisPlayer);
 
-		//printf("Hand Count = %d, expected %d\n", GT.handCount[thisPlayer], G.handCount[thisPlayer] + newCards - discarded);
-		assert(GT.handCount[thisPlayer] == G.handCount[thisPlayer] + newCards - discarded);
-		//printf("Deck Count = %d, expected %d\n", GT.deckCount[thisPlayer], G.deckCount[thisPlayer] - newCards + shuffledCards);
-		assert(GT.deckCount[thisPlayer] == G.deckCount[thisPlayer] - newCards + shuffledCards);
-		//printf("Coins = %d, expected %d\n", GT.coins, G.coins + extraCoins);
+		//printf("Hand Count = %d, expected %d\n", GT.handCount[thisPlayer], G.handCount[thisPlayer]);
+		assert(GT.handCount[thisPlayer] == G.handCount[thisPlayer]);
+		//printf("Deck Count = %d, expected %d\n", GT.deckCount[thisPlayer], G.deckCount[thisPlayer]);
+		assert(GT.deckCount[thisPlayer] == G.deckCount[thisPlayer]);
+		//printf("Coins = %d, expected %d\n", GT.coins, G.coins);
 		assert(GT.coins == G.coins + extraCoins);
 		//printf("Checking Victory card piles...\n");
 		assert(GT.supplyCount[estate] == G.supplyCount[estate]);

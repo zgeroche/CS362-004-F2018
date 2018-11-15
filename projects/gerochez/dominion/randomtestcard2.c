@@ -61,9 +61,9 @@ int main()
 		memcpy(&GT, &G, sizeof(struct gameState));
 
 		//call smithy with GT
-		r = cardEffect(smithy, choice1, choice2, choice3, &GT, handpos, &bonus);
+		r = cardEffect(great_hall, choice1, choice2, choice3, &GT, handpos, &bonus);
 
-		newCards = 3;
+		newCards = 1;
 
 		//printf("Testing Player: %d\n", thisPlayer);
 

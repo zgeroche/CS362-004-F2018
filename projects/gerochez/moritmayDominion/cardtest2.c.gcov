@@ -1,0 +1,83 @@
+        -:    0:Source:cardtest2.c
+        -:    0:Graph:cardtest2.gcno
+        -:    0:Data:cardtest2.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1://card test 1
+        -:    2://check adventurer card implementation
+        -:    3:
+        -:    4:#include "dominion.h"
+        -:    5:#include "dominion_helpers.h"
+        -:    6:#include <string.h>
+        -:    7:#include <stdio.h>
+        -:    8:#include <assert.h>
+        -:    9:#include "rngs.h"
+        -:   10:#include <time.h>
+        -:   11:#include <stdlib.h>
+        -:   12:
+function main called 1 returned 100% blocks executed 79%
+        1:   13:int main(){
+        -:   14:  struct gameState state;
+        1:   15:  int k[10] = {adventurer, gardens, embargo, village, great_hall, mine, cutpurse,
+        -:   16:	       sea_hag, tribute, smithy};
+        -:   17:  int p;
+        1:   18:  srand(time(0));
+call    0 returned 100%
+call    1 returned 100%
+        -:   19:  
+        -:   20:  //randomize number of players from 2-4
+        1:   21:  p = (rand()%3) + 2;
+call    0 returned 100%
+        1:   22:  initializeGame(p, k, rand(), &state);
+call    0 returned 100%
+call    1 returned 100%
+        -:   23:  
+        1:   24:  int c = 0;
+        1:   25:  int s = 0;
+        1:   26:  int g = 0;
+        1:   27:  int currentPlayer = 0;
+        1:   28:  int drawnTreasure = 0;
+        1:   29:  int cardDrawn = state.hand[currentPlayer][state.handCount[currentPlayer]-1];
+        -:   30:  
+        3:   31:  while (drawnTreasure <2){
+branch  0 taken 50%
+branch  1 taken 50% (fallthrough)
+        6:   32:      for (currentPlayer = 0; currentPlayer <5; currentPlayer++){
+branch  0 taken 83%
+branch  1 taken 17% (fallthrough)
+      130:   33:         for (int i = 0; i < 25; i++){
+branch  0 taken 96%
+branch  1 taken 4% (fallthrough)
+      125:   34:            if (cardDrawn == copper){
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0%
+      125:   35:                c++;
+      125:   36:                drawnTreasure++;
+        -:   37:            }
+    #####:   38:            else if (cardDrawn == silver){
+branch  0 never executed
+branch  1 never executed
+    #####:   39:                s++;
+    #####:   40:                drawnTreasure++;
+        -:   41:            } 
+    #####:   42:            else if (cardDrawn == gold){
+branch  0 never executed
+branch  1 never executed
+    #####:   43:                g++;
+    #####:   44:                drawnTreasure++;
+        -:   45:            }
+        -:   46:        }
+        -:   47:     }
+        -:   48:  }
+        1:   49:    if ((c + s + g) > 2) {
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0%
+        1:   50:        printf("adventurer test failed\n");
+call    0 returned 100%
+        -:   51:        }
+        -:   52:    else{
+    #####:   53:        printf("adventurer test passed\n");
+call    0 never executed
+        -:   54:    }
+        1:   55:  return 0;
+        -:   56:}

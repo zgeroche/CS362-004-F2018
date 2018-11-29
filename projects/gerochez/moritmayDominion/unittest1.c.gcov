@@ -1,0 +1,72 @@
+        -:    0:Source:unittest1.c
+        -:    0:Graph:unittest1.gcno
+        -:    0:Data:unittest1.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:/*
+        -:    2: * Test for numHandsCards()
+        -:    3: * Include in makefile:
+        -:    4: *
+        -:    5: * unittest1: unittest1.c dominion.o rngs.o
+        -:    6: * 	gcc -o unittest1 -g unittest1.c dominion.o rngs.o $(CFLAGS)
+        -:    7: *
+        -:    8:*/
+        -:    9:
+        -:   10:#include "dominion.h"
+        -:   11:#include "dominion_helpers.h"
+        -:   12:#include <string.h>
+        -:   13:#include <stdio.h>
+        -:   14:#include <assert.h>
+        -:   15:#include "rngs.h"
+        -:   16:
+function main called 1 returned 100% blocks executed 94%
+        1:   17:int main()
+        -:   18:{
+        -:   19:	int i;
+        1:   20:	int seed = 1000;
+        1:   21:	int numPlayer = 4;
+        -:   22:	int p, r, handCount;
+        -:   23:	int bonus;
+        1:   24:	int k[10] = {adventurer, council_room, feast, gardens, mine,
+        -:   25:		    remodel, smithy, village, baron, great_hall};
+        -:   26:	struct gameState G;
+        1:   27:	int maxHandCount = 5;
+        -:   28:
+        1:   29:	printf("Now testing numHandCards():\n");
+call    0 returned 100%
+        -:   30:	
+        -:   31:	//For every player
+        5:   32:	for (p = 0; p < numPlayer; p++)
+branch  0 taken 80%
+branch  1 taken 20% (fallthrough)
+        -:   33:	{
+        -:   34:		//For 1 through 5 handCount
+       24:   35:		for (handCount = 1; handCount <= maxHandCount; handCount++)
+branch  0 taken 83%
+branch  1 taken 17% (fallthrough)
+        -:   36:		{
+       20:   37:			printf("Testing player %d with %d cards in hand\n", p, handCount);
+call    0 returned 100%
+       20:   38:			memset(&G, 23, sizeof(struct gameState)); //reset game
+       20:   39:			r = initializeGame(numPlayer, k, seed, &G); //initialize new game state
+call    0 returned 100%
+       20:   40:			G.handCount[p] = handCount; //assign handcount
+       20:   41:			G.whoseTurn = p;
+        -:   42:
+        -:   43:			//assert return val of numHandCards is the assigned number above
+       20:   44:			printf("numHandCards(&G) returned %d, expected %d\n", numHandCards(&G), handCount);
+call    0 returned 100%
+call    1 returned 100%
+       20:   45:			assert(numHandCards(&G) == handCount);
+call    0 returned 100%
+branch  1 taken 0% (fallthrough)
+branch  2 taken 100%
+call    3 never executed
+        -:   46:		}
+        -:   47:	}
+        -:   48:
+        1:   49:	printf("All tests passed!\n");
+call    0 returned 100%
+        -:   50:	
+        1:   51:	return 0;
+        -:   52:}

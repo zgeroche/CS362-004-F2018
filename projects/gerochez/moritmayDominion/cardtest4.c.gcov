@@ -1,0 +1,131 @@
+        -:    0:Source:cardtest4.c
+        -:    0:Graph:cardtest4.gcno
+        -:    0:Data:cardtest4.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:/*
+        -:    2: * TEST FOR EMBARGO CARD
+        -:    3: * THIS TEST DOES NOT PASS AS THE EMBARGO CARD IS BUGGED, AS PER ASSIGNMENT 2
+        -:    4:*/
+        -:    5:
+        -:    6:/*
+        -:    7: * Include the following in your makefile:
+        -:    8: *
+        -:    9: * cardtest4: cardtest4.c dominion.o rngs.o
+        -:   10: * 	gcc -o cardtest1 -g cardtest4.c dominion.o rngs.o $(CFLAGS)
+        -:   11: *
+        -:   12:*/
+        -:   13:
+        -:   14:#include "dominion.h"
+        -:   15:#include "dominion_helpers.h"
+        -:   16:#include <string.h>
+        -:   17:#include <stdio.h>
+        -:   18:#include <assert.h>
+        -:   19:#include <stdlib.h>
+        -:   20:#include "rngs.h"
+        -:   21:
+        -:   22:#define TESTCARD "embargo"
+        -:   23:
+function main called 1 returned 100% blocks executed 72%
+        1:   24:int main()
+        -:   25:{
+        1:   26:	int newCards = 0;
+        1:   27:	int discarded = 1;
+        1:   28:	int extraCoins = 0;
+        1:   29:	int shuffledCards = 0;
+        -:   30:
+        -:   31:	int i, j, m;
+        1:   32:	int handpos = 0, choice1 = 0, choice2 = 0, choice3 = 0, bonus = 0;
+        1:   33:	int seed = 1000;
+        1:   34:	int numPlayers = 2;
+        1:   35:	int thisPlayer = 0;
+        -:   36:	struct gameState G, GT;
+        1:   37:	int k[10] = {adventurer, village, steward, smithy, embargo,
+        -:   38:		     gardens, council_room, great_hall, minion, outpost};
+        -:   39:	
+        -:   40:
+        -:   41:	//initlialize game state
+        1:   42:	initializeGame(numPlayers, k, seed, &G);
+call    0 returned 100%
+        -:   43:
+        1:   44:	printf("**** TESTING CARD: %s ****\n", TESTCARD);
+call    0 returned 100%
+        -:   45:
+        -:   46:	//Begin Testing
+        1:   47:	memcpy(&GT, &G, sizeof(struct gameState));
+        -:   48:
+        -:   49:	//call card effect 
+        1:   50:	cardEffect(embargo, choice1, choice2, choice3, &GT, handpos, &bonus);
+call    0 returned 100%
+        -:   51:
+        -:   52:	//Simulate embargo effect
+        1:   53:	extraCoins = 2;
+        1:   54:	int addedTokens = 1;
+        -:   55:
+        -:   56:	//Print messages comparing G and GT
+        1:   57:	printf("Hand Count = %d, expected %d\n", GT.handCount[thisPlayer], G.handCount[thisPlayer] + newCards - discarded);
+call    0 returned 100%
+        1:   58:	assert(GT.handCount[thisPlayer] == G.handCount[thisPlayer] + newCards - discarded);
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+call    2 never executed
+        1:   59:	printf("Deck Count = %d, expected %d\n", GT.deckCount[thisPlayer], G.deckCount[thisPlayer] - newCards + shuffledCards);
+call    0 returned 100%
+        1:   60:	assert(GT.deckCount[thisPlayer] == G.deckCount[thisPlayer] - newCards + shuffledCards);
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+call    2 never executed
+        1:   61:	printf("Coins = %d, expected %d\n", GT.coins, G.coins + extraCoins);
+call    0 returned 100%
+        1:   62:	assert(GT.coins == G.coins + extraCoins);
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+call    2 never executed
+        1:   63:	printf("Embargo tokens on Supply pile %d: %d, expected %d\n", choice1, GT.embargoTokens[choice1], G.embargoTokens[choice1] + addedTokens);
+call    0 returned 100%
+        1:   64:	printf("Checking Victory card piles...\n");
+call    0 returned 100%
+        1:   65:	assert(GT.supplyCount[estate] == G.supplyCount[estate]);
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+call    2 never executed
+        1:   66:	assert(GT.supplyCount[duchy] == G.supplyCount[duchy]);
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+call    2 never executed
+        1:   67:	assert(GT.supplyCount[province] == G.supplyCount[province]);
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+call    2 never executed
+        1:   68:	printf("Checking Kingdom card piles...\n");
+call    0 returned 100%
+       11:   69:	for (i = 0; i < 10; i++)
+branch  0 taken 91%
+branch  1 taken 9% (fallthrough)
+        -:   70:	{
+       10:   71:		assert(G.supplyCount[k[i]] == GT.supplyCount[k[i]]);
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+call    2 never executed
+        -:   72:	}
+        1:   73:	printf("Checking Hand, Deck, Discard, Coins of other player...\n");
+call    0 returned 100%
+        1:   74:	assert(GT.handCount[1] == G.handCount[1]);
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+call    2 never executed
+        1:   75:	assert(GT.discardCount[1] == G.discardCount[1]);
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+call    2 never executed
+        1:   76:	assert(GT.deckCount[1] == G.deckCount[1]);
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+call    2 never executed
+        -:   77:	//assert(GT.coins == G.coins);
+        -:   78:
+        1:   79:	printf("ALL TESTS PASSED\n");
+call    0 returned 100%
+        -:   80:
+        -:   81:
+        -:   82:}

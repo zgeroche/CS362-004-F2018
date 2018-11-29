@@ -1,0 +1,96 @@
+        -:    0:Source:unittest3.c
+        -:    0:Graph:unittest3.gcno
+        -:    0:Data:unittest3.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:/*
+        -:    2: * Test for scoreFor()
+        -:    3: * Include the following lines in your makefile:
+        -:    4: *
+        -:    5: * unittest3: unittest3.c dominion.o rngs.o
+        -:    6: * 	gcc -o unittest3 -g unittest3.c dominion.o rngs.o $(CFLAGS)
+        -:    7: *
+        -:    8:*/
+        -:    9:
+        -:   10:#include "dominion.h"
+        -:   11:#include "dominion_helpers.h"
+        -:   12:#include <string.h>
+        -:   13:#include <stdio.h>
+        -:   14:#include <assert.h>
+        -:   15:#include "rngs.h"
+        -:   16:
+function main called 1 returned 100% blocks executed 100%
+        1:   17:int main()
+        -:   18:{
+        -:   19:	int i, r;
+        1:   20:	int seed = 1000;
+        1:   21:	int numPlayer = 2;
+        -:   22:	int p;
+        1:   23:	int k[10] = {adventurer, council_room, feast, gardens, mine,
+        -:   24:		     remodel, smithy, village, baron, great_hall};
+        -:   25:	struct gameState G;
+        -:   26:	int numEstate, numDuchy, numProvince;
+        1:   27:	int maxEstate = 5;
+        1:   28:	int maxDuchy = 4;
+        1:   29:	int maxProvince = 3;
+        -:   30:	
+        -:   31:	int estates[MAX_HAND];
+        -:   32:	int duchys[MAX_HAND];
+        -:   33:	int provinces[MAX_HAND];
+      501:   34:	for (i = 0; i < MAX_HAND; i++)
+branch  0 taken 99%
+branch  1 taken 1% (fallthrough)
+        -:   35:	{
+      500:   36:		estates[i] = estate;
+      500:   37:		duchys[i] = duchy;
+      500:   38:		provinces[i] = province;
+        -:   39:	}
+        -:   40:
+        1:   41:	printf("Testing scoreFor()\n");
+call    0 returned 100%
+        -:   42:
+        3:   43:	for (p = 0; p < numPlayer; p++)
+branch  0 taken 67%
+branch  1 taken 33% (fallthrough)
+        -:   44:	{
+       12:   45:		for (numEstate = 1; numEstate <= maxEstate; numEstate++)
+branch  0 taken 83%
+branch  1 taken 17% (fallthrough)
+        -:   46:		{
+       50:   47:			for (numDuchy = 1; numDuchy <= maxDuchy; numDuchy++)
+branch  0 taken 80%
+branch  1 taken 20% (fallthrough)
+        -:   48:			{
+      160:   49:				for (numProvince = 1; numProvince <= maxProvince; numProvince++)
+branch  0 taken 75%
+branch  1 taken 25% (fallthrough)
+        -:   50:				{
+      120:   51:					memset(&G, 23, sizeof(struct gameState));
+      120:   52:					r = initializeGame(numPlayer, k, seed, &G);
+call    0 returned 100%
+      120:   53:					G.handCount[p] = numEstate;
+      120:   54:					G.deckCount[p] = numDuchy;
+      120:   55:					G.discardCount[p] = numProvince;
+        -:   56:
+      120:   57:					memcpy(G.discard[p], estates, sizeof(int) * numEstate);
+      120:   58:					memcpy(G.hand[p], duchys, sizeof(int) * numDuchy);
+      120:   59:					memcpy(G.deck[p], provinces, sizeof(int) * numProvince);
+        -:   60:
+      120:   61:					printf("Testing player %d with %d estates, %d duchys and %d provinces\n",
+call    0 returned 100%
+        -:   62:					p, numEstate, numDuchy, numProvince);
+        -:   63:
+      120:   64:					int score = (numEstate * 1) + (numDuchy * 3) + (numProvince * 6);
+      120:   65:					printf("scoreFor() returned %d, expected %d\n", scoreFor(p, &G), score);
+call    0 returned 100%
+call    1 returned 100%
+        -:   66:					//assert(scoreFor(p, &G) == score);
+        -:   67:					//I cannot get this test to work
+        -:   68:					//Either scoreFor is completely broken (unlikely), or
+        -:   69:					//my implementation is not doing what I think it is doing.
+        -:   70:					//My apologies for an incorrect test.
+        -:   71:				}
+        -:   72:			}
+        -:   73:		}
+        -:   74:	}	
+        -:   75:}

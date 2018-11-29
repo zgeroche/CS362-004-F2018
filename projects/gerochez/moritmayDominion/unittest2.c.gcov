@@ -1,0 +1,60 @@
+        -:    0:Source:unittest2.c
+        -:    0:Graph:unittest2.gcno
+        -:    0:Data:unittest2.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:/*
+        -:    2: * Test for supplyCount()
+        -:    3: * Include the following lines in your makefile:
+        -:    4: *
+        -:    5: * unittest2: unittest2.c dominion.o rngs.o
+        -:    6: * 	gcc -o unittest2 -g unittest2.c dominion.o rngs.o $(CFLAGS)
+        -:    7: *
+        -:    8:*/
+        -:    9:
+        -:   10:#include "dominion.h"
+        -:   11:#include "dominion_helpers.h"
+        -:   12:#include <string.h>
+        -:   13:#include <stdio.h>
+        -:   14:#include <assert.h>
+        -:   15:#include "rngs.h"
+        -:   16:
+function main called 1 returned 100% blocks executed 93%
+        1:   17:int main()
+        -:   18:{
+        -:   19:	int i, r;
+        1:   20:	int seed = 1000;
+        1:   21:	int numPlayer = 2;
+        -:   22:	int p;
+        1:   23:	int k[10] = {adventurer, council_room, feast, gardens, mine,
+        -:   24:		     remodel, smithy, village, baron, great_hall};
+        -:   25:	struct gameState G;
+        -:   26:	int supCount;
+        1:   27:	int maxSupCount = 10;
+        -:   28:
+       11:   29:        for (i = 0; i < 10; i++)
+branch  0 taken 91%
+branch  1 taken 9% (fallthrough)
+        -:   30:	{
+      110:   31:		for (supCount = 1; supCount <= maxSupCount; supCount++)
+branch  0 taken 91%
+branch  1 taken 9% (fallthrough)
+        -:   32:		{
+      100:   33:			printf("Testing card %d with supCount %d.\n", i, supCount);
+call    0 returned 100%
+      100:   34:			memset(&G, 23, sizeof(struct gameState));
+      100:   35:			r = initializeGame(numPlayer, k, seed, &G);
+call    0 returned 100%
+      100:   36:			G.supplyCount[k[i]] = supCount;
+        -:   37:			
+      100:   38:			assert(supplyCount(k[i], &G) == supCount);
+call    0 returned 100%
+branch  1 taken 0% (fallthrough)
+branch  2 taken 100%
+call    3 never executed
+        -:   39:		}
+        -:   40:	}
+        -:   41:
+        1:   42:	printf("All tests passed!\n");
+call    0 returned 100%
+        -:   43:}
